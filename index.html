@@ -4,25 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script.js" defer></script>
     <title>Document</title>
 </head>
 <body>
-    <section>
+    <section id ="firstSection">
         <label for="search"> Rechercher</label>
         <input type="text" id="search">
         <h2> Résultats </h2>
-        <ul>
-            <li> Time is running out - Muse <button> Ajouter </button> </li>
-            <li> Time is running out - Muse <button> Ajouter </button> </li>
-            <li> Time is running out - Muse <button> Ajouter </button> </li>
-            <li> Time is running out - Muse <button> Ajouter </button> </li>
-            <li> Time is running out - Muse <button> Ajouter </button> </li>
+        <ul id="result">
+            <li> Time is running out - Muse1 <button onclick="add()"> Ajouter </button></li>
+            <li> Time is running out - Muse2 <button onclick="add()"> Ajouter </button> </li>
+            <li> Time is running out - Muse3 <button onclick="add()"> Ajouter </button> </li>
+            <li> Time is running out - Muse4 <button onclick="add()"> Ajouter </button> </li>
+            <li> Time is  <button onclick="add()"> Ajouter </button> </li>
         </ul>
     </section>
-    <section>
+    <section id="secondSection">
         <h2> PlayList </h2>
         <ul>
-            <li> ACDC <button> Supprimer </button> </li>
+            <li> ACDC  <button> Supprimer </button></li>
         </ul>
     </section>
     <section> 
