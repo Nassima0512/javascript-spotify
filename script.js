@@ -19,6 +19,7 @@ const li5t=li5.dataset.text;
 //Controle des index de dataset et affectation
 
 function add(index){
+    
     if(index===1){
         index=li1t;
         addli(index);
@@ -56,6 +57,7 @@ function addli(index){
         newLi.remove();
     });
 }
+
 
 
 
