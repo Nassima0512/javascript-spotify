@@ -1,19 +1,29 @@
 
+//Token
+const userAccessToken="BQC9RpXIYmVqGK2nl1vu8B70HpMVm9RekE5nHGSnsSbV1dLmElaoJy8AcewQvGnwTPrlULoVq3fyM7ClCXkWhZSNb-fX-xQEQTTDnl7s33kB9vfmxN7TGeQwy80Z_v_aGCreUj8rfHF4cBkUJpXnuWn4nQXKzIKhrRHxhHHByNZLPS5fgmjHaHQbqryLL5vBVziKYVNHfgxtibBayBcMQj__Azld1CsE4uidTMtCVS0i2aPRjNReP96ZdVN-Gx6OOX04F8DGtBl8OjIPDBx2O1ArjPOjL60i519zW8iG";
+
 const search=document.getElementById('search');
 const rechercher = document.getElementsByTagName("button")[0];
+const ajouterPlayList = document.querySelector("#secondSection button");
 const sauvegarder = document.querySelector("#user button");
+const userId="s1yqmvrlrf7jyo8se3sp4k9na";
+
+
+
+//##############################################//##############################################//##############################################
+
+//Recherche résultat
+
+
 rechercher.addEventListener('click', () =>{
   const textSearch=search.value;
-   //const userAccessToken="BQBR6VxQ-luy8jfT65f58X0j2UrbuHzQAFsXUU09wu5mngYXyngRu0fY_-rgzlcbGMBeAOhLptwLy4FZ8HOJ9pQXE3qqiYQIryhwpDs5ibyatAedSWENsKZS8WMa9LIr_fG-ClMDQLtRTi4yvVd-wOCbWfSjTfxvxf6VpAR6SwcyHSP9zA";
-   const userAccessToken="BQCCAuSK7lLKl1BjjE_VZr88nXHjAkvKIOheaZNZ5Jwibb05YA7Cby0az2OYu16lfii6TAuKKMKrZwwnR_GimSq6u0RUB5sJH9R217PeqqyXpJqwY4BFNMwo6YDaMhF4yEbPOfvQQ23BPIpPdAnZ4yVbqspE0UrM_NbmueEYNwqMZe7CDw";
-   const options={
-     method: "GET",
+  const options={ 
+   method: "GET",
      "Content-type": "application/json",
      headers: {
      Authorization: `Bearer ${userAccessToken}`
      }};
   
-  //const url='https://api.spotify.com/v1/search?q=$search&type=artist';
    const url=`https://api.spotify.com/v1/search?q=${textSearch}&type=track`;
    fetch(url, options)
      .then(response => response.json())
@@ -38,6 +48,9 @@ rechercher.addEventListener('click', () =>{
   });
 });
 
+
+//Affichage résultat
+
 function addListe(newId,newName,newImg,newUri,newMarket){
   const newLi=document.createElement('li');
   const btnAdd=document.createElement('button');
@@ -49,19 +62,22 @@ function addListe(newId,newName,newImg,newUri,newMarket){
   newLi.append(btnAdd)
   ul1.append(newLi);
   btnAdd.addEventListener("click", ()=>{
-    addPlaList(newId,newName,newImg,newUri,newMarket);
+    addPlayList(newId,newName,newImg,newUri,newMarket);
     newLi.remove();
     textbtn.remove();
   });
 }
 
-function addPlaList(newId,newName,newImg,newUri,newMarket){
+
+//Affichage playlist
+
+function addPlayList(newId,newName,newImg,newUri,newMarket){
   const newLi=document.createElement('li');
   const btnRemove=document.createElement('button');
   const textbtn = document.createTextNode("Supprimer");
 
   btnRemove.append(textbtn)
-  newLi.append(newId,newName,newImg,newUri,newMarket);
+  newLi.append(newName,newImg);
   const ul1=document.querySelector("#secondSection ul");
   newLi.append(btnRemove)
   ul1.append(newLi);
@@ -72,7 +88,98 @@ function addPlaList(newId,newName,newImg,newUri,newMarket){
   });
 }
 
-sauvegarder.addEventListener('click', ()=> {
 
-})
+
+//##############################################//##############################################//##############################################
+
+
+//Création playlist
+//https://api.spotify.com/v1/users/{user_id}/playlists
+
+ajouterPlayList.addEventListener('click' , ()=>{
+
+  const data = { "name": "New Playlist",
+  "description": "New playlist description",
+  "public": false
+  } ;
+  const options={
+    method: "POST",
+    "Content-type": "application/json",
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+    Authorization: `Bearer ${userAccessToken}`
+    }};
+
+
+const url=`https://api.spotify.com/v1/users/${userId}/playlists`;
+
+fetch(url, options)
+            .then(response => response.json())
+            .then(data=>{ //response.json-> conversion json vers javascript
+            console.log(data);
+  const newId = document.createElement('p');
+  const newName = document.createElement('p');
+  const newUri = document.createElement('p');
+  newId.textContent = `${data.id}`;
+  newName.textContent = `${data.name}`; 
+  newUri.textContent = `${data.uri}`;
+  addListeSpotify(newId,newName,newUri);
+  });
+});
+
+//Appel affichage playlist
+
+function addListeSpotify(newId,newName,newUri){
+  const newLi=document.createElement('li');
+  const btnAdd=document.createElement('button');
+  const textbtn = document.createTextNode("Supprimer");
+
+  btnAdd.append(textbtn)
+  newLi.append(newId,newName,newUri);
+  const ul1=document.querySelector("#thirdsection ul");
+  newLi.append(btnAdd)
+  ul1.append(newLi);
+  btnAdd.addEventListener("click", ()=>{
+    //addPlaList(newId,newName,newUri);
+    newLi.remove();
+    textbtn.remove();
+  });
+
+ 
+}
+
+//##############################################//##############################################//##############################################
+
+//Sauvegarder playlist
+//https://api.spotify.com/v1/playlists/{playlist_id}/tracks
+
+/*sauvegarder.addEventListener('click', ()=> {
+  
+  const options={
+    method: "POST",
+    "Content-type": "application/json",
+     headers: {
+      'Content-Type': 'application/json',
+    Authorization: `Bearer ${userAccessToken}`
+    }};
+
+
+//const url=`https://api.spotify.com/v1/playlists/${playlistId}/tracks`;
+const url=`https://api.spotify.com/v1/playlists/650p3KBiLlcYFau36f6fTc/tracks`;
+
+fetch(url, options)
+            .then(response => response.json())
+            .then(data=>{ //response.json-> conversion json vers javascript
+            console.log(data);
+  /*const newId = document.createElement('p');
+  const newName = document.createElement('p');
+  const newUri = document.createElement('p');
+  newId.textContent = `${data.id}`;
+  newName.textContent = `${data.name}`; 
+  newUri.textContent = `${data.uri}`;
+  addListeSpotify(newId,newName,newUri);
+  });
+});*/
+
 
